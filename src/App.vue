@@ -1,19 +1,31 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <div id="app"></div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+
+  created() {
+    const url = "/api/shy/shy/dataType/push";
+    const socket = new SockJS(url);
+    const headers = {};
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect(
+      headers,
+      () => {
+        console.log("连接成功 :>> ");
+      },
+      () => {
+        console.log("连接失败 :>> ");
+      }
+    );
+  },
+};
 </script>
 
 <style>
